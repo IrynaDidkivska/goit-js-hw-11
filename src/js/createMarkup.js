@@ -3,7 +3,6 @@ import "simplelightbox/dist/simple-lightbox.min.css";
 import getRefs from './refs';
 const refs = getRefs();
 export function createCard(hits) {
-    refs.gallery.innerHTML = "";
     const cardMarkup = hits.map(hitsEl => {
         const { largeImageURL, webformatURL, tags, likes, views, comments, downloads } = hitsEl;
         return `<li class="photo-card">

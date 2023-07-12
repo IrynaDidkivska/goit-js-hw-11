@@ -38,6 +38,7 @@ async function onFormSubmit(event) {
             refs.loadMoreBtn.style.display = "none";
             throw('Sorry, there are no images matching your search query. Please try again.')
         } else {
+            refs.gallery.innerHTML = "";
             refs.loadMoreBtn.style.display = "block";
             Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
         }
