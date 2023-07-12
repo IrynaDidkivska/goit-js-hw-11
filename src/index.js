@@ -19,7 +19,7 @@ refs.loadMoreBtn.disabled = true;
 refs.loadMoreBtn.style.display = "none";
 
 
-
+//Пошук зображень
 async function onFormSubmit(event) {
     event.preventDefault();
     refs.loadMoreBtn.disabled = false;
@@ -34,7 +34,6 @@ async function onFormSubmit(event) {
 
     try {
         const { total, totalHits, hits } = await getImgApi(searchQuery, currentPage);
-        console.log(`total: ${total}; totalHits: ${totalHits}`);
         if (total === 0) {
             refs.loadMoreBtn.style.display = "none";
             throw('Sorry, there are no images matching your search query. Please try again.')
@@ -52,7 +51,7 @@ async function onFormSubmit(event) {
 
 
 getImgApi(searchQuery, currentPage)
-
+//Догрузка зображень
 async function onLoadMoreBtn(event) { 
     try {
         currentPage += 1;
