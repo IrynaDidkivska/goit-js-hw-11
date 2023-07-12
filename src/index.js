@@ -57,17 +57,18 @@ async function onLoadMoreBtn(event) {
     try {
         currentPage += 1;
         const { total, totalHits, hits } = await getImgApi(searchQuery, currentPage);
+        console.log(totalHits);
         const totalPage = Math.ceil(totalHits / 40);
-        if (currentPage >= totalPage) {
+        if (currentPage > totalPage) {
             currentPage = 1;
             refs.loadMoreBtn.style.display = "none";
             throw ('We are sorry, but you have reached the end of search results.');
         }
-        createCard(hits);
+    createCard(hits);
     } catch (error) {
         Notiflix.Notify.failure(error);
     }
-        const { height: cardHeight } = document.querySelector(".gallery").firstElementChild.getBoundingClientRect();
+    const { height: cardHeight } = document.querySelector(".gallery").firstElementChild.getBoundingClientRect();
     window.scrollBy({
         top: cardHeight * 2,
         behavior: "smooth",
