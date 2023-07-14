@@ -1,16 +1,25 @@
-import axios from "axios";
 import Notiflix from 'notiflix';
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
-import { getImgApi } from './js/img-api';
-import { createCard } from './js/createMarkup'
-import getRefs from './js/refs';
-const refs = getRefs();
+import { getImgApi } from './img-api';
+import { createCard } from './createMarkup'
+import {refs } from './refs';
 
-
+Notiflix.Notify.init({
+    position: 'center-center',
+    fontFamily: 'Georgia',
+    fontSize: '18px',
+    cssAnimationDuration: 100,
+});
+const lightbox = new SimpleLightbox('.gallery a', {
+    closeText: '&#10007',
+    navText: ['&#10094', '&#10095'],
+    captionsData:	'alt',
+    captionPosition: 'bottom',
+    captionDelay: 250,
+})
 
 let currentPage = 1;
-let currentHits = 0;
 let searchQuery = '';
 
 refs.formEl.addEventListener('submit', onFormSubmit);
@@ -37,12 +46,13 @@ async function onFormSubmit(event) {
         if (total === 0) {
             refs.loadMoreBtn.style.display = "none";
             throw('Sorry, there are no images matching your search query. Please try again.')
-        } else {
-            refs.gallery.innerHTML = "";
-            refs.loadMoreBtn.style.display = "block";
-            Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
-        }
-        createCard(hits);
+        } 
+        refs.gallery.innerHTML = "";
+        refs.loadMoreBtn.style.display = "block";
+        Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
+        const cardMarkup = createCard(hits);
+        refs.gallery.insertAdjacentHTML("beforeend", cardMarkup);
+        lightbox.refresh();
     } catch (error) {
         Notiflix.Notify.failure(error);
     }
@@ -50,8 +60,6 @@ async function onFormSubmit(event) {
     event.target.reset();
 }
 
-
-getImgApi(searchQuery, currentPage)
 //Догрузка зображень
 async function onLoadMoreBtn(event) { 
     try {
@@ -64,7 +72,9 @@ async function onLoadMoreBtn(event) {
             refs.loadMoreBtn.style.display = "none";
             throw ('We are sorry, but you have reached the end of search results.');
         }
-    createCard(hits);
+        const cardMarkup = createCard(hits);
+        refs.gallery.insertAdjacentHTML("beforeend", cardMarkup);
+        lightbox.refresh();
     } catch (error) {
         Notiflix.Notify.failure(error);
     }
@@ -77,9 +87,3 @@ async function onLoadMoreBtn(event) {
 }
 
 
-Notiflix.Notify.init({
-position: 'center-center',
-    fontFamily: 'Georgia',
-    fontSize: '18px',
-    cssAnimationDuration: 100,
-});

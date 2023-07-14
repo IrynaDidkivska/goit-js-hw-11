@@ -60,6 +60,7 @@ body {
   transform: translate(-50%, -50%);
   z-index: 10;
 }
+
 .gallery {
   display: grid;
   max-width: 1140px;
